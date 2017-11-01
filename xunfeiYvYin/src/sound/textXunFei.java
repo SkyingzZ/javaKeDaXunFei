@@ -11,7 +11,6 @@ import com.iflytek.util.Version;
 
 public class textXunFei {
 
-	
 	// 语音听写对象
 	SpeechRecognizer speechRecognize;
 	
@@ -20,7 +19,7 @@ public class textXunFei {
 		speechRecognize = SpeechRecognizer.createRecognizer();
 	}
 
-	//开始监听
+	//开始监听并向讯飞服务器发送语音
 	public int startListen() {
 		
 		if (!speechRecognize.isListening())
@@ -35,13 +34,10 @@ public class textXunFei {
 	* 监听器
 	*/
 	private RecognizerListener mRecoListener = new RecognizerListener(){
-		//听写结果回调接口(返回Json格式结果，用户可参见附录)；
-		//一般情况下会通过onResults接口多次返回结果，完整的识别内容是多次结果的累加；
-		//关于解析Json的代码可参见MscDemo中JsonParser类；
-		//isLast等于true时会话结束。
+		
+		//获取结果
 		public void onResult(RecognizerResult results, boolean isLast){
-			//DebugLog.Log(results.getResultString ());
-			
+			//用json来获取结果
 		    String text = results.getResultString();
 		    JsonParser json = new JsonParser();
 		    String newTest = json.parseIatResult(text);
@@ -63,11 +59,10 @@ public class textXunFei {
 	};
 
 	public static void main(String[] args) {
-		//听写对象
+		//初始化听写对象
 		textXunFei t=new textXunFei();
 		StringBuffer param=new StringBuffer();
-		t=new textXunFei();
-		//初始化听写对象
+		
 		param = new StringBuffer();
 		param.append( "appid=" + Version.getAppid() );
 		SpeechUtility.createUtility(param.toString() );
